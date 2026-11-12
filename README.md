@@ -43,6 +43,10 @@ mixed-precision flags are left off (avoids a GradScaler / bf16 error), and the 4
 | Training loss | 3.38 | 0.47 |
 | Token accuracy | 0.46 | 0.93 |
 
+> **Caveat:** both values are training-set numbers, and they are computed over the whole chat-formatted sequence —
+> including the fixed instruction, which is identical in every sample — not only over the label. They show that
+> training converged, not how well the model classifies. The 11 validation samples are not used by the trainer.
+
 The adapter is **20 MB**, versus ~3 GB for the full fp16 model. As a sanity check, `src/infer.py` classifies
 5 hand-written reviews correctly — several resemble the training templates, so this is not an evaluation.
 
@@ -79,6 +83,6 @@ Hyperparameters, labels and the instruction prompt are in `src/config.py`.
 Template-generated data is narrow and easy, so the numbers above show the model fitting this data — not
 real-world accuracy.
 
-- [ ] Evaluate on a real, human-labeled Vietnamese review dataset with precision / recall / F1, against a PhoBERT baseline
+- [ ] Compute the loss on the answer only (prompt/completion data) and evaluate on a real, human-labeled Vietnamese review dataset with precision / recall / F1, against TF-IDF + logistic regression and zero-shot baselines on the same split
 - [ ] Retarget to content moderation (toxic / normal) with real data
 - [ ] Merge the adapter into the base model and serve it behind an API

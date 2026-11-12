@@ -1,9 +1,7 @@
-# Module 05 — Fine-tune LLM với QLoRA (Phase 2 lộ trình JD)
+# Ghi chú — Fine-tune LLM với QLoRA
 
 Fine-tune một LLM nhỏ (Qwen2.5-1.5B) bằng **QLoRA (4-bit)** cho task **phân loại cảm xúc tiếng Việt**.
 Cùng cơ chế này → đổi nhãn + dữ liệu là thành **moderation** (độc hại/bình thường).
-
-> Lấp gap JD: **fine-tune LLM** (J1.3, J2.3) · **moderation** (J1.2) · **synthetic data** (J1.5, J2.2).
 
 ## Ý tưởng
 - **LoRA**: đóng băng model gốc, chỉ "cắm" ma trận nhỏ (low-rank) vào lớp attention → train ~1% tham số, lưu adapter vài MB.
@@ -38,5 +36,5 @@ python -m src.infer      # 3) test phân loại
 
 ## Bước tiếp (nâng cấp)
 1. Đổi task sang **moderation** (nhãn: `độc hại` / `bình thường`) + dữ liệu thật.
-2. Đánh giá **precision/recall** trên tập val (Phase 4 — Evaluation).
+2. Chỉ tính loss trên phần trả lời (dữ liệu dạng prompt/completion) và đánh giá **precision/recall/F1** trên tập test có nhãn thật.
 3. Merge adapter vào model & serve (hoặc gắn vào pipeline RAG/agent).
